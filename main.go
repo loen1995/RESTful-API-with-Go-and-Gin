@@ -8,7 +8,7 @@ import (
 
 // game represents data about a videogame
 type game struct {
-	ID 			string 	`json:"id"`
+	ID 		string 	`json:"id"`
 	Title 		string 	`json:"title"`
 	Developer 	string 	`json:"developer"`
 	Price 		float64 `json:"price"`
