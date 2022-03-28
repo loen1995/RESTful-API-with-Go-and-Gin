@@ -37,6 +37,7 @@ var collection = []game{
 func main()  {
 	router := gin.Default()
 	router.GET("/collection", getCollection)
+	router.POST("/collection", postGame)
 
 	router.Run("localhost:8080")
 }
@@ -44,4 +45,18 @@ func main()  {
 // getCollection responds with the list of all videogames as JSON
 func getCollection(c *gin.Context)  {
 	c.IndentedJSON(http.StatusOK, collection)
+}
+
+// postGame adds a game from JSON received in the request body
+func postGame(c *gin.Context)  {
+	var newGame game
+
+	//Call BindJSON to bind the received JSON to newGame
+	if err := c.BindJSON(&newGame); err != nil {
+		return
+	}
+
+	//Add the new game to the slice.
+	collection = append(collection, newGame)
+	c.IndentedJSON(http.StatusCreated, newGame)
 }
