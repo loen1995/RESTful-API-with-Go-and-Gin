@@ -37,6 +37,7 @@ var collection = []game{
 func main()  {
 	router := gin.Default()
 	router.GET("/collection", getCollection)
+	router.GET("/collection/:id", getGameByID)
 	router.POST("/collection", postGame)
 
 	router.Run("localhost:8080")
@@ -59,4 +60,20 @@ func postGame(c *gin.Context)  {
 	//Add the new game to the slice.
 	collection = append(collection, newGame)
 	c.IndentedJSON(http.StatusCreated, newGame)
+}
+
+// getGameByID locates the game whose ID value matches the id
+//parameter sent by the client, then returns that album as a response.
+func getGameByID(c *gin.Context) {
+	id := c.Param("id")
+
+	//Loop over the collection, looking for a game whose ID value
+	//matches the parameter.
+	for _, a := range collection {
+		if a.ID == id {
+			c.IndentedJSON(http.StatusOK, a)
+			return
+		}
+	}
+	c.IndentedJSON(http.StatusNotFound, gin.H{"message": "game not found"})
 }
